@@ -3,6 +3,8 @@ const server = require('json-server')
 const bcrypt = require('bcrypt')
 const knex = require('knex')
 
+require('dotenv').config()
+
 // cria o servidor que vai rodar na porta 5174 e lidar com os requests
 const app = server.create()
 // cria um router para lidar com as requisições padrão do json-server
@@ -14,16 +16,17 @@ const middlewares = server.defaults()
 app.use(middlewares)
 app.use(server.bodyParser)
 
-const queryBuilder = knex({
-  client: 'mysql2',
-  connection: {
-    host: 'devi.tools',
-    port: 3360,
-    database: 'database',
-    user: 'root',
-    password: 'root',
-  }
-})
+  // usa variáveis de ambiente criadas no .env
+  const queryBuilder = knex({
+    client: process.env.BACKEND_DB_CLIENT || 'mysql2',
+    connection: {
+      host: process.env.BACKEND_DB_HOST || 'localhost',
+      port: process.env.BACKEND_DB_PORT || 3306,
+      database: process.env.BACKEND_DB_DATABASE || 'backend',
+      user: process.env.BACKEND_DB_USER || 'root',
+      password: process.env.BACKEND_DB_PASSWORD || 'root',
+    }
+  })
 
 // cria um endpoint para o login
 app.post('/api/v1/login', async (request, response) => {

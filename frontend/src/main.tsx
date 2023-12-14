@@ -14,8 +14,12 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: '/auth/login',
+        path: '/login',
         element: <DripStoreLogin />,
+      },
+      {
+        path: '/cadastro',
+        element:<div><h1>Cadastro</h1></div>,
       }
     ]
   }

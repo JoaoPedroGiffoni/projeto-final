@@ -25,7 +25,7 @@ export const DripStoreHead = function () {
         <div className={classes.DripStoreHeadRight}>
           <PrimaryButton
             label={'Entrar'}
-            onClick={() => navigate('/auth/login')}
+            onClick={() => navigate('/login')}
           />
         </div>
       </div>
