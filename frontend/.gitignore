@@ -1,4 +1,10 @@
 node_modules
 .DS_Store
 .idea
+<<<<<<< HEAD
 .dist
+=======
+dist
+.env.local
+.env.*.local
+>>>>>>> 7b739112bbda3d991f46e607a8431cb2cd418c92

@@ -1,13 +1,14 @@
 // importa o json-server e o bcrypt da pasta node_modules
 import * as jsonServer from 'json-server'
 import { JsonServerRouter } from 'json-server'
-
 import * as bodyParser from 'body-parser'
 import * as bcrypt from 'bcrypt'
-
 import knex from 'knex'
+import { loadEnv } from './config/env'
 
-// declara a estrutra da entidade usuário
+loadEnv()
+
+// declara a estrutura da entidade usuário
 interface User {
   id: number;
   username: string;
@@ -31,13 +32,13 @@ app.use(middlewares)
 app.use(bodyParser.json())
 
 const queryBuilder = knex({
-  client: 'mysql2',
+  client: process.env.BACKEND_DB_CLIENT || 'mysql2',
   connection: {
-    host: 'devi.tools',
-    port: 3360,
-    database: 'database',
-    user: 'root',
-    password: 'root',
+    host: process.env.BACKEND_DB_HOST || 'localhost',
+    port: parseInt(process.env.BACKEND_DB_PORT || '3306'),
+    database: process.env.BACKEND_DB_DATABASE || 'backend',
+    user: process.env.BACKEND_DB_USER || 'root',
+    password: process.env.BACKEND_DB_PASSWORD || 'root',
   }
 })
 

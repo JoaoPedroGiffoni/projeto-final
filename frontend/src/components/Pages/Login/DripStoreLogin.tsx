@@ -3,38 +3,20 @@ import { Facebook } from '../../General/Icons/Facebook/Facebook'
 import { Gmail } from '../../General/Icons/Gmail/Gmail'
 import { PrimaryButton } from '../../General/Buttons/PrimaryButton'
 import { useState } from 'react'
+import { login, Status } from '../../../services/Auth'
 
 export const DripStoreLogin = function () {
-  const [username, setUsername] = useState('wilcorrea')
-  const [password, setPassword] = useState('aq1sw2de3')
-  const [error, setError] = useState(false)
+  const [username, setUsername] = useState(import.meta.env.FRONTEND_DEFAULT_USERNAME)
+  const [password, setPassword] = useState(import.meta.env.FRONTEND_DEFAULT_PASSWORD)
   const [message, setMessage] = useState('')
 
   const requestSignIn = async () => {
-    try {
-      const response = await fetch(
-        'http://localhost:5174/api/v1/login',
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          method: 'POST',
-          body: JSON.stringify({ username, password })
-        }
-      )
-      const data = await response.json()
-
-      setError(!response.ok)
-      setMessage(data.message)
-
-    } catch (exception) {
-      setError(true)
-      if (typeof exception === 'string') {
-        setMessage(exception)
-      } else if (exception instanceof Error) {
-        setMessage(exception.message)
-      }
+    const content = await login(username, password)
+    let message = ''
+    if (content.status === Status.error) {
+      message = 'Usuário e/ou senha inválidos'
     }
+    setMessage(message)
   }
 
   return (
@@ -84,7 +66,7 @@ export const DripStoreLogin = function () {
               />
             </div>
 
-            {error && (
+            {message && (
               <div className={classes.DripStoreLoginFormError}>{message}</div>
             )}
 
